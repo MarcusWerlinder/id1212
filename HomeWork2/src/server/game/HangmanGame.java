@@ -33,7 +33,7 @@ public class HangmanGame {
 
         gameInstance.guess(ourGuess);
         if(gameInstance.guessedCorrect()) totalScore++;
-        else if (!gameInstance.canStartNew()) totalScore--;
+        else if (!gameInstance.canStartNew() && totalScore != 0) totalScore--;
 
         //We want to send a response back to the player
         return "Word: " + gameInstance.getWord() + " Attempts: " + gameInstance.getTries() + "/" + gameInstance.getTotalTries() + " score: " + totalScore;
