@@ -45,8 +45,8 @@ public class CmdParser {
         }
     }
 
-    public String getArgument() throws InvalidStateException {
-        if(argument == null) throw new InvalidStateException("Put in an argument as well plox dox plz");
+    public String getArgument() {
+        if(argument == null) throw new IndexOutOfBoundsException("Put in an argument as well plox dox plz");
 
         return argument;
     }

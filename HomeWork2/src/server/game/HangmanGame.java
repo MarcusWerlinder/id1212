@@ -29,7 +29,7 @@ public class HangmanGame {
         if (gameInstance.guessedCorrect()) return ("You have already guessed the correct word, start a new game");
         //Some tests we need to pass before we do another guess
         if (gameInstance.getTries() >= gameInstance.getTotalTries()) return ("You have already guessed to many times");
-        if(gameInstance.alreadyGuesses(ourGuess)) return ("You have already guessed this");
+        if(gameInstance.alreadyGuesses(ourGuess.toLowerCase())) return ("You have already guessed this");
 
         gameInstance.guess(ourGuess);
         if(gameInstance.guessedCorrect()) totalScore++;

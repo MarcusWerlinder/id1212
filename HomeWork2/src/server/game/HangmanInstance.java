@@ -6,7 +6,7 @@ public class HangmanInstance {
     private char[] word;
     private char[] guessOfWord;
     private boolean rightAnsw;
-    private List<String> guessAttempts = new ArrayList<>();
+    private HashSet<String> guessAttempts = new HashSet<>();
 
     private int tries = 0;
     private int totalTries;
@@ -60,8 +60,7 @@ public class HangmanInstance {
     }
 
     boolean alreadyGuesses(String guess) {
-        guessAttempts.contains(guess);
-        return false;
+        return guessAttempts.contains(guess);
     }
 
     public boolean canStartNew() {

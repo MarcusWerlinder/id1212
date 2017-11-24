@@ -51,24 +51,24 @@ public class NonBlockingInterpreter implements Runnable{
                         contr.disconnect();
                         break;
                     case CON:
-                        contr.connect("127.0.0.1", 8080);
+                            contr.connect("127.0.0.1", 8080);
                         break;
                     case START:
                         contr.startGame();
                         break;
                     case GUESS:
                         try {
-                            System.out.println(cmdPars.getArgument());
                             contr.guess(cmdPars.getArgument());
                         } catch (IndexOutOfBoundsException e) {
-
+                            OwnConsole.errorMsg("You tried a bad GUESS command", e);
                         }
                         break;
                     default:
+                        outMgr.println("This is a bad command");
                         break;
                 }
             } catch (Exception e) {
-
+                if (receivingCmds) OwnConsole.errorMsg(e.getMessage(), e);
             }
         }
     }
@@ -85,11 +85,12 @@ public class NonBlockingInterpreter implements Runnable{
         @Override
         public void print(String msg){
             outMsg.println(msg);
+            outMsg.print(PROMPT);
         }
 
         @Override
         public void errorMsg(String error, Exception e) {
-            outMsg.println("Error: ");
+            outMsg.print("Error: ");
             outMsg.println(error);
         }
 

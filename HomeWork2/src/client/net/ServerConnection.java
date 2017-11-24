@@ -88,9 +88,11 @@ public class ServerConnection implements Runnable{
      * @param key
      * @throws IOException
      */
-    private static void completeConnection(SelectionKey key) throws IOException {
+    private void completeConnection(SelectionKey key) throws IOException {
         socketChannel.finishConnect();
         key.interestOps(SelectionKey.OP_WRITE);
+
+        printToListerner("We managed to connect to: " + serverAddress);
     }
 
     /**
@@ -138,7 +140,6 @@ public class ServerConnection implements Runnable{
 
     public void connect(String host, int port) {
         try {
-            printToListerner("We are trying to connect");
             serverAddress = new InetSocketAddress(host, port);
             new Thread(this).start();
         } catch (Exception e) {

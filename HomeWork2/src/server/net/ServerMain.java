@@ -17,6 +17,12 @@ public class ServerMain {
     private static final int portNo = 8080;
     private Selector selector;
 
+    /**
+     * Very important part of the program, we have given the clientHandler the key it's associated with
+     * then the clientHandler calls addPendingMsg when we are ready to send something. Where we send back the key
+     * that the clientHandler was associated with and sets it to WRITE
+     */
+
     void addPendingMsg(SelectionKey channelKey) {
         if (channelKey == null) throw new InvalidParameterException("The channel key is not defined");
 
