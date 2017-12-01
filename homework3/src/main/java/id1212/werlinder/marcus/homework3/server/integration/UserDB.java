@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 @Entity(name = "user")
 @NamedNativeQuery(name = "getUser", query = "select * from user where username = ? and password = ?", resultClass = UserDB.class)
+@NamedNativeQuery(name = "checkDouble", query = "select * from user where username = ?", resultClass = UserDB.class)
 public class UserDB extends HibernateStarter{
     @Id
     @GeneratedValue

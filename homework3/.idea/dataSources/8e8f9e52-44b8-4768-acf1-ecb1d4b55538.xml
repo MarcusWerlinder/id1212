@@ -9,30 +9,31 @@
     <schema id="4" parent="1" name="performance_schema"/>
     <schema id="5" parent="1" name="phpmyadmin"/>
     <schema id="6" parent="1" name="test"/>
-    <schema id="7" parent="1" name="hw3">
+    <schema id="7" parent="1" name="studyscheduler"/>
+    <schema id="8" parent="1" name="hw3">
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
-    <table id="8" parent="7" name="hibernate_sequence"/>
-    <table id="9" parent="7" name="user"/>
-    <column id="10" parent="8" name="next_val">
+    <table id="9" parent="8" name="hibernate_sequence"/>
+    <table id="10" parent="8" name="user"/>
+    <column id="11" parent="9" name="next_val">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <column id="11" parent="9" name="id">
+    <column id="12" parent="10" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="12" parent="9" name="password">
+    <column id="13" parent="10" name="password">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="13" parent="9" name="username">
+    <column id="14" parent="10" name="username">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="14" parent="9" name="PRIMARY">
+    <key id="15" parent="10" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

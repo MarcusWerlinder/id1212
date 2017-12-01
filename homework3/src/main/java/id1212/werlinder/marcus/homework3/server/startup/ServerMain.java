@@ -3,6 +3,7 @@ package id1212.werlinder.marcus.homework3.server.startup;
 import id1212.werlinder.marcus.homework3.common.FileServer;
 import id1212.werlinder.marcus.homework3.server.controller.Controller;
 import id1212.werlinder.marcus.homework3.server.integration.HibernateStarter;
+import id1212.werlinder.marcus.homework3.server.net.SocketListener;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -34,6 +35,10 @@ public class ServerMain {
             System.err.println("We couldn't start the server");
             e.printStackTrace();
         }
+    }
+
+    private void startServerListener(Controller controller) {
+        new SocketListener(controller);
     }
 
     private void startRmi(Controller controller) throws RemoteException, MalformedURLException {
