@@ -2,6 +2,8 @@ package id1212.werlinder.marcus.homework3.server.model;
 
 import id1212.werlinder.marcus.homework3.server.integration.HibernateStarter;
 
+import org.hibernate.annotations.NamedNativeQuery;
+
 import javax.persistence.*;
 
 @Entity(name = "file")

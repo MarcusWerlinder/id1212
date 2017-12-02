@@ -76,11 +76,10 @@ public class Interpreter implements Runnable{
         try {
             String localFilename = parser.getArgument(0);
 
-            Path path = Paths.get(String.format("client_files\\%s", localFilename));
-            System.out.println(path);
+            Path path = Paths.get(String.format("clients_files\\%s", localFilename));
             if(!Files.exists(path))
                 throw new FileNotFoundException("We could not find the file " + localFilename);
-            /*
+
             long fileSize = Files.size(path);
 
             String fileName = parser.getArgument(1);
@@ -90,7 +89,7 @@ public class Interpreter implements Runnable{
 
             FileStruct FileToServer = new FileStruct(userId, fileName, fileSize, access, readable, writable);
 
-            server.upload(userId, FileToServer);
+            server.upload(userId, FileToServer);/*
             FileHandler.sendFile(socket, path);*/
         } catch (Exception e) {
             e.printStackTrace();

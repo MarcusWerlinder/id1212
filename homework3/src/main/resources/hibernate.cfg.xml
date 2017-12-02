@@ -20,5 +20,6 @@
 
         <!-- List of XML mapping files -->
         <mapping class="id1212.werlinder.marcus.homework3.server.model.UserDB"/>
+        <mapping class="id1212.werlinder.marcus.homework3.server.model.FileDB"/>
     </session-factory>
 </hibernate-configuration>

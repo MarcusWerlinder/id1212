@@ -6,6 +6,8 @@ import id1212.werlinder.marcus.homework3.server.model.FileDB;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
+import javax.persistence.NoResultException;
+
 public class FileDI {
 
     /**
@@ -13,11 +15,15 @@ public class FileDI {
      */
     public FileDB getFileByName(String filename) {
         Session session = FileDB.getSession();
+        try{
+            session.beginTransaction();
+            Query query = session.getNamedQuery("checkFile");
+            query.setString(0, filename);
 
-        Query query = session.getNamedQuery("checkFile");
-        query.setString(0, filename);
-
-        return (FileDB) query.getSingleResult();
+            return (FileDB) query.getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultException("We didn't find the file");
+        }
     }
 
     /**
