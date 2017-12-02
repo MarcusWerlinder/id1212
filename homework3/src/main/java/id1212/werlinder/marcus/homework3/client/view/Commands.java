@@ -10,9 +10,13 @@ public enum Commands {
      */
     REGISTER,
     /**
-     * Upload a file
+     * Upload a file to the server
      */
     UPLOAD,
+    /**
+     * Download a file from the server
+     */
+    DOWNLOAD,
     /**
      *Quit everything
      */

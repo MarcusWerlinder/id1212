@@ -7,6 +7,7 @@ import id1212.werlinder.marcus.homework3.common.FileServer;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.Credentials;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.FileStruct;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.SocketIdentifier;
+import id1212.werlinder.marcus.homework3.server.model.FileDB;
 
 import javax.security.auth.login.LoginException;
 import java.io.FileNotFoundException;
@@ -58,6 +59,8 @@ public class Interpreter implements Runnable{
                     case UPLOAD:
                         upload();
                         break;
+                    case DOWNLOAD:
+                        download();
                     case QUIT:
                         disconnect();
                         break;
@@ -67,6 +70,21 @@ public class Interpreter implements Runnable{
             } catch (Exception e) {
 
             }
+        }
+    }
+
+    private void download() throws RemoteException, IllegalAccessException {
+        try {
+            String fileName = parser.getArgument(0);
+
+            FileStruct serverFileInfo = server.getFileInfo(userId, fileName);
+            server.download(userId, fileName);
+
+            Path saveTo = Paths.get("clients_files/" + fileName);
+            FileHandler.recievingFile(socket, saveTo, serverFileInfo.getSize());
+            console.print("You successfully downloaded the file");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -89,8 +107,8 @@ public class Interpreter implements Runnable{
 
             FileStruct FileToServer = new FileStruct(userId, fileName, fileSize, access, readable, writable);
 
-            server.upload(userId, FileToServer);/*
-            FileHandler.sendFile(socket, path);*/
+            server.upload(userId, FileToServer);
+            FileHandler.sendFile(socket, path);
         } catch (Exception e) {
             e.printStackTrace();
         }

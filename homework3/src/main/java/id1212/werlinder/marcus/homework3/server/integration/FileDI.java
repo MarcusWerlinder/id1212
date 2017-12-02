@@ -52,4 +52,44 @@ public class FileDI {
             session.close();
         }
     }
+
+    public void update(FileStruct fileStruct) {
+        Session session = FileDB.getSession();
+
+        try {
+            session.beginTransaction();
+
+            FileDB file = getFileByName(fileStruct.getFilename());
+            file.setPublicAccess(fileStruct.isPublicAll());
+            file.setReadable(fileStruct.isReadable());
+            file.setWritable(fileStruct.isWritable());
+            file.setSize(fileStruct.getSize());
+
+            session.update(file);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    public void updateFileSize(FileStruct fileStruct) {
+        Session session = FileDB.getSession();
+
+        try {
+            session.beginTransaction();
+
+            FileDB file = getFileByName(fileStruct.getFilename());
+            file.setSize(fileStruct.getSize());
+
+            session.update(file);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+    }
 }

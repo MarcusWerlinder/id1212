@@ -13,6 +13,7 @@ import javax.persistence.NoResultException;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -70,10 +71,64 @@ public class Controller extends UnicastRemoteObject implements FileServer {
         try {
             FileDB file = fileDI.getFileByName(fileStruct.getFilename());
 
+            if(file.getOwner().getId() == client.getUserDB().getId()) {
+                fileDI.update(fileStruct);
+                uploadFile(client, fileStruct);
+            } else if (!file.isPublicAccess()) {
+                throw new IllegalAccessException("Sorry your not the owner and this is not a public file");
+            } else if (!file.isWritable()) {
+                throw new IllegalAccessException("Owner hasn't set this file to writable");
+            } else {
+                fileDI.updateFileSize(fileStruct);
+                uploadFile(client, fileStruct);
+
+                String msgToOwner = String.format("User \"%s\" has updated your public file: \"%s\"",
+                        client.getUserDB().getUsername(), fileStruct.getFilename());
+
+                clients.get(file.getOwner().getId()).sendToClient(msgToOwner);
+            }
+
         } catch (NoResultException e) {
             //The file doesn't exist yet we can insert it, we don't need to check anything
             fileDI.insert(client, fileStruct);
             uploadFile(client, fileStruct);
+        }
+    }
+
+    @Override
+    public FileStruct getFileInfo(long userId, String filename) throws RemoteException, IllegalAccessException {
+        ClientHandler client = auth(userId);
+        FileDI fileDI = new FileDI();
+
+        FileDB file = fileDI.getFileByName(filename);
+
+        if (file.getOwner().getId() == client.getUserDB().getId()) {
+            return new FileStruct(file);
+        } else if (!file.isPublicAccess()) {
+            throw new IllegalAccessException("You are not allowed to download this file, it's not public");
+        } else if (!file.isReadable()) {
+            throw new IllegalAccessException("This file is not readable");
+        } else {
+            return new FileStruct(file);
+        }
+    }
+
+    @Override
+    public void download(long userId, String filename) throws IOException, IllegalAccessException {
+        ClientHandler client = auth(userId);
+        FileDI fileDI = new FileDI();
+
+        FileDB file = fileDI.getFileByName(filename);
+        Path serverFilePath = Paths.get("server_files/" + filename);
+
+        if (file.getOwner().getId() == client.getUserDB().getId()) {
+            FileHandler.sendFile(client.getSocketChannel(), serverFilePath);
+        } else if (!file.isPublicAccess()) {
+            throw new IllegalArgumentException("This file is not for the public eye");
+        } else if (!file.isReadable()) {
+            throw new IllegalArgumentException("This file was not meant to be read by anyone");
+        } else {
+            FileHandler.sendFile(client.getSocketChannel(), serverFilePath);
         }
     }
 

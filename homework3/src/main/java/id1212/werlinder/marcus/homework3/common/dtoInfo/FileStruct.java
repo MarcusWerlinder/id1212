@@ -1,5 +1,7 @@
 package id1212.werlinder.marcus.homework3.common.dtoInfo;
 
+import id1212.werlinder.marcus.homework3.server.model.FileDB;
+
 import java.io.Serializable;
 
 public class FileStruct implements Serializable {
@@ -17,6 +19,15 @@ public class FileStruct implements Serializable {
         this.publicAll = publicAll;
         this.readable = readable;
         this.writable = writable;
+    }
+
+    public FileStruct(FileDB file) {
+        this.owner = file.getOwner().getId();
+        this.filename = file.getName();
+        this.size = file.getSize();
+        this.publicAll = file.isPublicAccess();
+        this.readable = file.isReadable();
+        this.writable = file.isWritable();
     }
 
     public long getOwner() {
