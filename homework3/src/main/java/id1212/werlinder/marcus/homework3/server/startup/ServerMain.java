@@ -31,6 +31,7 @@ public class ServerMain {
             server.startRmi(controller);
             System.out.println("The RMI server has successfully started");
 
+            server.startServerListener(controller);
         } catch (Exception e) {
             System.err.println("We couldn't start the server");
             e.printStackTrace();

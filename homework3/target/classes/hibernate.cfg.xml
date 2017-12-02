@@ -19,6 +19,6 @@
         <property name="hbm2ddl.auto">create</property>
 
         <!-- List of XML mapping files -->
-        <mapping class="id1212.werlinder.marcus.homework3.server.integration.UserDB"/>
+        <mapping class="id1212.werlinder.marcus.homework3.server.model.UserDB"/>
     </session-factory>
 </hibernate-configuration>

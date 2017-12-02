@@ -76,11 +76,11 @@ public class Interpreter implements Runnable{
         try {
             String localFilename = parser.getArgument(0);
 
-            Path path = Paths.get("client_files/%s", localFilename);
-
+            Path path = Paths.get(String.format("client_files\\%s", localFilename));
+            System.out.println(path);
             if(!Files.exists(path))
                 throw new FileNotFoundException("We could not find the file " + localFilename);
-
+            /*
             long fileSize = Files.size(path);
 
             String fileName = parser.getArgument(1);
@@ -91,9 +91,9 @@ public class Interpreter implements Runnable{
             FileStruct FileToServer = new FileStruct(userId, fileName, fileSize, access, readable, writable);
 
             server.upload(userId, FileToServer);
-            FileHandler.sendFile(socket, path);
+            FileHandler.sendFile(socket, path);*/
         } catch (Exception e) {
-            console.print("It didn't work to upload your file with your command");
+            e.printStackTrace();
         }
     }
 
@@ -118,9 +118,8 @@ public class Interpreter implements Runnable{
             Credentials credentials = extractCredentials(parser);
             userId = server.login(console, credentials);
             createServerSocket(userId);
-            System.out.println(userId);
         } catch (Exception e) {
-            console.print("We could not handle you login sorry");
+            e.printStackTrace();
         }
     }
 

@@ -1,12 +1,12 @@
 package id1212.werlinder.marcus.homework3.server.integration;
 
 import id1212.werlinder.marcus.homework3.common.dtoInfo.Credentials;
+import id1212.werlinder.marcus.homework3.server.model.UserDB;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
 import javax.security.auth.login.LoginException;
-import java.rmi.RemoteException;
 
 public class UserDI {
     private UserDB userDao;

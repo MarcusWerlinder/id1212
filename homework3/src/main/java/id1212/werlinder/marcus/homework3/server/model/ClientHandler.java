@@ -2,12 +2,8 @@ package id1212.werlinder.marcus.homework3.server.model;
 
 import id1212.werlinder.marcus.homework3.common.FileClient;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.Credentials;
-import id1212.werlinder.marcus.homework3.server.integration.UserDB;
 import id1212.werlinder.marcus.homework3.server.integration.UserDI;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 
-import javax.persistence.NoResultException;
 import javax.security.auth.login.LoginException;
 import java.nio.channels.SocketChannel;
 import java.rmi.RemoteException;
@@ -40,7 +36,7 @@ public class ClientHandler {
         return userDB.getId();
     }
 
-    void sendToClient(String msg) {
+    public void sendToClient(String msg) {
         CompletableFuture.runAsync(() -> {
             msgToClient.forEach(FileClient -> {
                 try {
@@ -54,5 +50,18 @@ public class ClientHandler {
 
     public void addFileClient(FileClient console) {
         msgToClient.add(console);
+    }
+
+    public void attachSocketHandler(SocketChannel socketChannel) {
+        this.socketChannel = socketChannel;
+        sendToClient("An socket has been attached to your client");
+    }
+
+    public UserDB getUserDB() {
+        return userDB;
+    }
+
+    public SocketChannel getSocketChannel() {
+        return socketChannel;
     }
 }
