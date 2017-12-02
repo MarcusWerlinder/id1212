@@ -61,6 +61,16 @@ public class Interpreter implements Runnable{
                         break;
                     case DOWNLOAD:
                         download();
+                        break;
+                    case LIST:
+                        list();
+                        break;
+                    case UNREGISTER:
+                        unregister();
+                        break;
+                    case NOTIFY:
+                        notifyFile();
+                        break;
                     case QUIT:
                         disconnect();
                         break;
@@ -71,6 +81,24 @@ public class Interpreter implements Runnable{
 
             }
         }
+    }
+
+    private void notifyFile() {
+        try {
+            String fileToNotify = parser.getArgument(0);
+            server.notifyFileUpdate(userId, fileToNotify);
+        } catch (IllegalAccessException | RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void unregister() throws IOException, IllegalAccessException {
+        server.unregister(userId);
+        userId = 0;
+    }
+
+    private void list() throws RemoteException, IllegalAccessException {
+        server.list(userId);
     }
 
     private void download() throws RemoteException, IllegalAccessException {
@@ -109,7 +137,7 @@ public class Interpreter implements Runnable{
 
             server.upload(userId, FileToServer);
             FileHandler.sendFile(socket, path);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

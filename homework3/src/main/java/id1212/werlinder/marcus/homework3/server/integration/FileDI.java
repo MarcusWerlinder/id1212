@@ -3,10 +3,12 @@ package id1212.werlinder.marcus.homework3.server.integration;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.FileStruct;
 import id1212.werlinder.marcus.homework3.server.model.ClientHandler;
 import id1212.werlinder.marcus.homework3.server.model.FileDB;
+import id1212.werlinder.marcus.homework3.server.model.UserDB;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 public class FileDI {
 
@@ -91,5 +93,15 @@ public class FileDI {
         } finally {
             session.close();
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<FileDB> getFiles(UserDB userDB) {
+        Session session = FileDB.getSession();
+
+        Query query = session.createQuery("Select files from file files where files.owner=:user or files.publicAccess = true");
+        query.setParameter("user", userDB);
+
+        return query.getResultList();
     }
 }

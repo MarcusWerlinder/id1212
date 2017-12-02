@@ -22,6 +22,18 @@ public enum Commands {
      */
     QUIT,
     /**
+     * If we want to list all the files that are available on the server
+     */
+    LIST,
+    /**
+     * We no longer want to be a member on this server
+     */
+    UNREGISTER,
+    /**
+     * If the user wants to be recognized if someone else reads/writes to a file
+     */
+    NOTIFY,
+    /**
      * Bad command
      */
     BAD_COMMAND

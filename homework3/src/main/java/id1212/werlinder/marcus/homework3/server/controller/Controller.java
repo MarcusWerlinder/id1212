@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
+import java.util.StringJoiner;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -85,7 +86,7 @@ public class Controller extends UnicastRemoteObject implements FileServer {
                 String msgToOwner = String.format("User \"%s\" has updated your public file: \"%s\"",
                         client.getUserDB().getUsername(), fileStruct.getFilename());
 
-                clients.get(file.getOwner().getId()).sendToClient(msgToOwner);
+                alertOwnerFileChange(file, msgToOwner);
             }
 
         } catch (NoResultException e) {
@@ -129,7 +130,56 @@ public class Controller extends UnicastRemoteObject implements FileServer {
             throw new IllegalArgumentException("This file was not meant to be read by anyone");
         } else {
             FileHandler.sendFile(client.getSocketChannel(), serverFilePath);
+
+            String msgToOwner = String.format("Ther user \"%s\" has downloaded your file: \"%s\"", client.getUserDB().getUsername(), filename);
+
+            alertOwnerFileChange(file, msgToOwner);
         }
+    }
+
+    @Override
+    public void unregister(long userId) throws IOException, IllegalAccessException {
+        ClientHandler client = auth(userId);
+        client.remove();
+        disconnect(userId);
+    }
+
+    @Override
+    public void notifyFileUpdate(long userId, String fileToNotifyAbout) throws RemoteException, IllegalAccessException {
+        ClientHandler client = auth(userId);
+        FileDB file = client.getFileDI().getFileByName(fileToNotifyAbout);
+
+        if (file.getOwner().getId() != client.getUserDB().getId())
+            throw new IllegalAccessException("Lol what are you trying to do, this isn't your file");
+
+        client.addFileToUpdateOn(file.getId());
+    }
+
+    @Override
+    public void list(long userId) throws RemoteException, IllegalAccessException {
+
+        ClientHandler client = auth(userId);
+        FileDI fileDI = new FileDI();
+
+        for (FileDB file : fileDI.getFiles(client.getUserDB())) {
+            StringJoiner msg = new StringJoiner(", ");
+            msg.add("Name: " + file.getName());
+            msg.add("Size: " + file.getSize() + " Bytes");
+            msg.add("Owner: " + file.getOwner().getUsername());
+            msg.add("Public: " + file.isPublicAccess());
+            msg.add("Read: " + file.isReadable());
+            msg.add("Writable: " + file.isWritable());
+            client.sendToClient(msg.toString());
+        }
+    }
+
+    private void alertOwnerFileChange(FileDB file, String msg) throws RemoteException {
+        long fileOwnderId = file.getOwner().getId();
+
+        //Check if the owner is actually online otherwise we can't alert
+        if (!clients.containsKey(fileOwnderId)) return;
+
+        clients.get(file.getOwner().getId()).alertFileUpdate(file.getId(), msg);
     }
 
     private void uploadFile(ClientHandler client, FileStruct fileStruct) {

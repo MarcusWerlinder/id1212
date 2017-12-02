@@ -2,6 +2,7 @@ package id1212.werlinder.marcus.homework3.server.model;
 
 import id1212.werlinder.marcus.homework3.common.FileClient;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.Credentials;
+import id1212.werlinder.marcus.homework3.server.integration.FileDI;
 import id1212.werlinder.marcus.homework3.server.integration.UserDI;
 
 import javax.security.auth.login.LoginException;
@@ -13,8 +14,10 @@ import java.util.concurrent.CompletableFuture;
 
 public class ClientHandler {
     private final static UserDI userdi = new UserDI();
+    private static FileDI filedDI = new FileDI();
     private UserDB userDB;
     private List<FileClient> msgToClient = new ArrayList<>();
+    private List<Long> filesToAlert = new ArrayList<>();
     private SocketChannel socketChannel;
 
     /**
@@ -61,7 +64,27 @@ public class ClientHandler {
         return userDB;
     }
 
+    public FileDI getFileDI() {
+        return filedDI;
+    }
+
+    public void addFileToUpdateOn(long fileId) throws RemoteException {
+        filesToAlert.add(fileId);
+
+        sendToClient("We will notify you when this file is updated");
+    }
+
+    public void alertFileUpdate(long fileId, String alertMsg) throws RemoteException {
+        if (!filesToAlert.contains(fileId)) return;
+
+        sendToClient(alertMsg);
+    }
+
     public SocketChannel getSocketChannel() {
         return socketChannel;
+    }
+
+    public void remove() throws RemoteException{
+        userdi.remove(userDB);
     }
 }

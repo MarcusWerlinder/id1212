@@ -70,4 +70,18 @@ public class UserDI {
             return false;
         }
     }
+
+    public void remove(UserDB userDB) {
+        Session session = UserDB.getSession();
+        try {
+            session.beginTransaction();
+            session.delete(userDB);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 }

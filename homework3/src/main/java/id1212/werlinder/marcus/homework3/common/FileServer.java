@@ -33,4 +33,10 @@ public interface FileServer extends Remote{
     FileStruct getFileInfo(long userId, String fileName) throws RemoteException, IllegalAccessException;
 
     void download(long userId, String fileName) throws IOException, IllegalAccessException;
+
+    void list(long userId) throws RemoteException, IllegalAccessException;
+
+    void notifyFileUpdate(long userId, String fileToNotify) throws RemoteException, IllegalAccessException;
+
+    void unregister(long userId) throws IOException, IllegalAccessException;
 }
