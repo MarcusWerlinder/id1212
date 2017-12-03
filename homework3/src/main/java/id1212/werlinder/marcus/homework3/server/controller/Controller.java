@@ -131,7 +131,7 @@ public class Controller extends UnicastRemoteObject implements FileServer {
         } else {
             FileHandler.sendFile(client.getSocketChannel(), serverFilePath);
 
-            String msgToOwner = String.format("Ther user \"%s\" has downloaded your file: \"%s\"", client.getUserDB().getUsername(), filename);
+            String msgToOwner = String.format("The user \"%s\" has downloaded your file: \"%s\"", client.getUserDB().getUsername(), filename);
 
             alertOwnerFileChange(file, msgToOwner);
         }
@@ -150,7 +150,7 @@ public class Controller extends UnicastRemoteObject implements FileServer {
         FileDB file = client.getFileDI().getFileByName(fileToNotifyAbout);
 
         if (file.getOwner().getId() != client.getUserDB().getId())
-            throw new IllegalAccessException("Lol what are you trying to do, this isn't your file");
+            throw new IllegalAccessException("this isn't your file we can't notify you about this");
 
         client.addFileToUpdateOn(file.getId());
     }
@@ -171,6 +171,19 @@ public class Controller extends UnicastRemoteObject implements FileServer {
             msg.add("Writable: " + file.isWritable());
             client.sendToClient(msg.toString());
         }
+    }
+
+    @Override
+    public void delete(long userId, String filename) throws RemoteException, IllegalAccessException {
+        ClientHandler client = auth(userId);
+
+        FileDB file = client.getFileDI().getFileByName(filename);
+
+        if (file.getOwner().getId() != client.getUserDB().getId())
+            throw new IllegalAccessException("You are not the owner, don't try to delete this file");
+
+        client.getFileDI().deleteFile(file);
+        client.sendToClient(String.format("The file \"%s\" has been deleted.", filename));
     }
 
     private void alertOwnerFileChange(FileDB file, String msg) throws RemoteException {

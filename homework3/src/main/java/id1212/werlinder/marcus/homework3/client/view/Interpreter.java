@@ -71,6 +71,9 @@ public class Interpreter implements Runnable{
                     case NOTIFY:
                         notifyFile();
                         break;
+                    case DELETE:
+                        delete();
+                        break;
                     case QUIT:
                         disconnect();
                         break;
@@ -83,12 +86,22 @@ public class Interpreter implements Runnable{
         }
     }
 
-    private void notifyFile() {
+    private void delete() throws InvalidCommandException, RemoteException, IllegalAccessException{
+        try {
+            String filename = parser.getArgument(0);
+
+            server.delete(userId, filename);
+        } catch (IllegalAccessException e) {
+            console.print(splitError(e.toString()));
+        }
+    }
+
+    private void notifyFile() throws RemoteException {
         try {
             String fileToNotify = parser.getArgument(0);
             server.notifyFileUpdate(userId, fileToNotify);
         } catch (IllegalAccessException | RemoteException e) {
-            e.printStackTrace();
+            console.print(splitError(e.toString()));
         }
     }
 
@@ -101,7 +114,7 @@ public class Interpreter implements Runnable{
         server.list(userId);
     }
 
-    private void download() throws RemoteException, IllegalAccessException {
+    private void download() throws IOException, IllegalAccessException{
         try {
             String fileName = parser.getArgument(0);
 
@@ -111,12 +124,12 @@ public class Interpreter implements Runnable{
             Path saveTo = Paths.get("clients_files/" + fileName);
             FileHandler.recievingFile(socket, saveTo, serverFileInfo.getSize());
             console.print("You successfully downloaded the file");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            console.print(splitError(e.toString()));
         }
     }
 
-    private void upload() throws IOException, IllegalAccessException, InvalidCommandException {
+    private void upload() throws IOException, IllegalAccessException{
         if(userId == 0) throw new IllegalArgumentException("You must have logged in before you can upload files");
 
         try {
@@ -137,8 +150,8 @@ public class Interpreter implements Runnable{
 
             server.upload(userId, FileToServer);
             FileHandler.sendFile(socket, path);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            console.print(splitError(e.toString()));
         }
     }
 
@@ -164,7 +177,7 @@ public class Interpreter implements Runnable{
             userId = server.login(console, credentials);
             createServerSocket(userId);
         } catch (Exception e) {
-            e.printStackTrace();
+            console.print(splitError(e.toString()));
         }
     }
 
@@ -216,5 +229,10 @@ public class Interpreter implements Runnable{
 
             return console.nextLine();
         }
+    }
+
+    private String splitError(String decode) {
+        String arr[] = decode.split("at");
+        return arr[0];
     }
 }

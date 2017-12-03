@@ -1,5 +1,6 @@
 package id1212.werlinder.marcus.homework3.common;
 
+import id1212.werlinder.marcus.homework3.client.view.InvalidCommandException;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.Credentials;
 import id1212.werlinder.marcus.homework3.common.dtoInfo.FileStruct;
 
@@ -39,4 +40,6 @@ public interface FileServer extends Remote{
     void notifyFileUpdate(long userId, String fileToNotify) throws RemoteException, IllegalAccessException;
 
     void unregister(long userId) throws IOException, IllegalAccessException;
+
+    void delete(long userId, String filename) throws RemoteException, IllegalAccessException;
 }

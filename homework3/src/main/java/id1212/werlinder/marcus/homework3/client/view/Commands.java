@@ -34,6 +34,10 @@ public enum Commands {
      */
     NOTIFY,
     /**
+     * If we want to erase a file from the server
+     */
+    DELETE,
+    /**
      * Bad command
      */
     BAD_COMMAND

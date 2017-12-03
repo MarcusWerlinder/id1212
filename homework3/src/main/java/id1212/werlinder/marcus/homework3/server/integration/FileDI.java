@@ -104,4 +104,19 @@ public class FileDI {
 
         return query.getResultList();
     }
+
+    public void deleteFile(FileDB file) {
+        Session session = FileDB.getSession();
+
+        try {
+            session.beginTransaction();
+            session.delete(file);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
 }
