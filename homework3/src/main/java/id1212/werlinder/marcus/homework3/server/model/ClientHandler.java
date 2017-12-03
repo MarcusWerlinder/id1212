@@ -26,7 +26,7 @@ public class ClientHandler {
     public void register(Credentials credentials) throws Exception {
         userdi.register(credentials);
 
-        sendToClient("We have been successfully registered");
+        sendToClient("We have been successfully registered as: " + credentials.getUser() + " " + credentials.getUserPass());
     }
 
     /**
