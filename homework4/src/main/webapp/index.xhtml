@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Currency conversion site</title>
+</h:head>
+<h:body>
+    <h1>Convert currencies</h1>
+
+    <h:form>
+        From:
+        <h:selectOneMenu value="${Manager.fromId}">
+            <f:selectItem value="${Manager.currencies}"
+                          var="currency"
+                          itemValue="#{currency.id}"
+                          itemLabel="#{currency.name}" />
+        </h:selectOneMenu>
+
+        To:
+        <h:selectOneMenu value="${Manager.toId}">
+            <f:selectItem value="${Manager.currencies}"
+                          var="currency"
+                          itemValue="#{currency.id}"
+                          itemLabel="#{currency.name}" />
+        </h:selectOneMenu>
+
+        <p>
+            <h:outputLabel for="convert_amt" value="How much do you want to convert" />
+        </p>
+        <p>
+            <h:inputText id="convert_amt" value="#{Manager.amntToConvert}" />
+        </p>
+        <p>
+            <h:outputLabel for="convert_res" value="The converted amount" />
+        </p>
+        <p>
+            <h:inputText id="convert_res" value="#{Manager.amntConverted}" disabled="true" />
+        </p>
+
+        <p>
+            <h:commandButton value="Convert" action="#{Manager.convert}"/>
+        </p>
+    </h:form>
+</h:body>
+</html>
