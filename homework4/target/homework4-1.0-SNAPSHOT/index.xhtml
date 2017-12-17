@@ -11,16 +11,16 @@
 
     <h:form>
         From:
-        <h:selectOneMenu value="${Manager.fromId}">
-            <f:selectItem value="${Manager.currencies}"
+        <h:selectOneMenu value="${manager.fromId}">
+            <f:selectItems value="${manager.currencies}"
                           var="currency"
                           itemValue="#{currency.id}"
                           itemLabel="#{currency.name}" />
         </h:selectOneMenu>
 
         To:
-        <h:selectOneMenu value="${Manager.toId}">
-            <f:selectItem value="${Manager.currencies}"
+        <h:selectOneMenu value="${manager.toId}">
+            <f:selectItems value="${manager.currencies}"
                           var="currency"
                           itemValue="#{currency.id}"
                           itemLabel="#{currency.name}" />
@@ -30,17 +30,17 @@
             <h:outputLabel for="convert_amt" value="How much do you want to convert" />
         </p>
         <p>
-            <h:inputText id="convert_amt" value="#{Manager.amntToConvert}" />
+            <h:inputText id="convert_amt" value="#{manager.amntToConvert}" />
         </p>
         <p>
             <h:outputLabel for="convert_res" value="The converted amount" />
         </p>
         <p>
-            <h:inputText id="convert_res" value="#{Manager.amntConverted}" disabled="true" />
+            <h:inputText id="convert_res" value="#{manager.amntConverted}" disabled="true" />
         </p>
 
         <p>
-            <h:commandButton value="Convert" action="#{Manager.convert}"/>
+            <h:commandButton value="Convert" action="#{manager.convert}"/>
         </p>
     </h:form>
 </h:body>

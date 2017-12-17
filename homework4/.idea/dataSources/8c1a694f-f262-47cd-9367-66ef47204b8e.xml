@@ -17,93 +17,27 @@
     </schema>
     <table id="10" parent="2" name="hibernate_sequence"/>
     <table id="11" parent="2" name="user"/>
-    <table id="12" parent="9" name="currency"/>
-    <table id="13" parent="9" name="hibernate_sequence"/>
-    <table id="14" parent="9" name="rate"/>
-    <column id="15" parent="10" name="next_val">
+    <column id="12" parent="10" name="next_val">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
     </column>
-    <column id="16" parent="11" name="id">
+    <column id="13" parent="11" name="id">
       <Position>1</Position>
       <DataType>bigint(20)|0</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="17" parent="11" name="password">
+    <column id="14" parent="11" name="password">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <column id="18" parent="11" name="username">
+    <column id="15" parent="11" name="username">
       <Position>3</Position>
       <DataType>varchar(255)|0</DataType>
     </column>
-    <key id="19" parent="11" name="PRIMARY">
+    <key id="16" parent="11" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="20" parent="12" name="id">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="21" parent="12" name="name">
-      <Position>2</Position>
-      <DataType>varchar(255)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="22" parent="12" name="UK_ocsst6ixgkhiji9xt1c1sijgu">
-      <ColNames>name</ColNames>
-      <Unique>1</Unique>
-    </index>
-    <key id="23" parent="12" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <key id="24" parent="12" name="UK_ocsst6ixgkhiji9xt1c1sijgu">
-      <ColNames>name</ColNames>
-      <UnderlyingIndexName>UK_ocsst6ixgkhiji9xt1c1sijgu</UnderlyingIndexName>
-    </key>
-    <column id="25" parent="13" name="next_val">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-    </column>
-    <column id="26" parent="14" name="rate">
-      <Position>1</Position>
-      <DataType>float|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="27" parent="14" name="to_id">
-      <Position>2</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="28" parent="14" name="from_id">
-      <Position>3</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="29" parent="14" name="FKdlujsux5xvkmkk1csywdik16y">
-      <ColNames>from_id</ColNames>
-    </index>
-    <key id="30" parent="14" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>to_id
-from_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="31" parent="14" name="FK2i2jgyu784lw3cfufan95lbb7">
-      <ColNames>to_id</ColNames>
-      <RefSchemaName>hw4</RefSchemaName>
-      <RefTableName>currency</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="32" parent="14" name="FKdlujsux5xvkmkk1csywdik16y">
-      <ColNames>from_id</ColNames>
-      <RefSchemaName>hw4</RefSchemaName>
-      <RefTableName>currency</RefTableName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
   </database-model>
 </dataSource>

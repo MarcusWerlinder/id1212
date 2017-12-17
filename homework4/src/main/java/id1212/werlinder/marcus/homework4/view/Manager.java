@@ -47,6 +47,12 @@ public class Manager implements Serializable {
         this.amntToConvert = amntToConvert;
     }
 
+    public float getAmntConverted() { return amntConverted; }
+
+    public void setAmntConverted(float amntConverted) {
+        this.amntConverted = amntConverted;
+    }
+
     public long getFromId() {
         return fromId;
     }
