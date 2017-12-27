@@ -19,6 +19,7 @@ public class GameHandler implements Runnable {
     GameHandler(GameServer server, Socket playerSocket) {
         this.server = server;
         this.playerSocket = playerSocket;
+        ctrl.newHangmanGame();
         connected = true;
     }
 
@@ -27,8 +28,9 @@ public class GameHandler implements Runnable {
         try {
             fromPlayer = new ObjectInputStream(playerSocket.getInputStream());
             toPlayer = new ObjectOutputStream(playerSocket.getOutputStream());
-        } catch (IOException ioe) {
-            throw new UncheckedIOException(ioe);
+        } catch (IOException e) {
+            System.err.println("Failed to read/write stream");
+            e.printStackTrace();
         }
 
         while(connected) {
@@ -37,8 +39,12 @@ public class GameHandler implements Runnable {
 
                 switch (msg.getType()) {
                     case GUESS:
-                        ctrl.guess(msg.getBody());
-                        guessResponse("Tjena");
+                        System.out.println("We got the message it's: " + msg.getBody());
+                        guessResponse(ctrl.guess(msg.getBody()));
+                        break;
+                    case START:
+                        System.out.println("We need to start a game instance for the client");
+                        ctrl.startNewGameInstance();
                         break;
                     case DISCONNECT:
                         disconnectPlayer();
@@ -61,9 +67,9 @@ public class GameHandler implements Runnable {
 
     private void sendMsg(MsgType type, String body) throws IOException {
         Message message = new Message(type, body);
-        toClient.writeObject(message);
-        toClient.flush(); // Flush the pipe
-        toClient.reset(); // Remove object cache
+        toPlayer.writeObject(message);
+        toPlayer.flush(); // Flush the pipe
+        toPlayer.reset(); // Remove object cache
     }
 
     private void disconnectPlayer() {
@@ -76,5 +82,6 @@ public class GameHandler implements Runnable {
         }
 
         connected = false;
+        server.removeHandler(this);
     }
 }

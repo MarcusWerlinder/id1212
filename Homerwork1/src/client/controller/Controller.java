@@ -42,4 +42,14 @@ public class Controller {
             }
         });
     }
+
+    public void startGame() {
+        CompletableFuture.runAsync(() -> {
+            try {
+                serverConnection.startGame();
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        });
+    }
 }

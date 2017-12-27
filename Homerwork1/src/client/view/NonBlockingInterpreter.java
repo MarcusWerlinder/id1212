@@ -39,6 +39,9 @@ public class NonBlockingInterpreter implements Runnable {
                     case CON:
                         contr.connect("127.0.0.1", 8080, new ConsoleOutput());
                         break;
+                    case START:
+                        contr.startGame();
+                        break;
                     case GUESS:
                         contr.sendGuess(cmdLine.getArgument());
                         break;
@@ -60,7 +63,7 @@ public class NonBlockingInterpreter implements Runnable {
     public class ConsoleOutput implements OutputHandler {
         @Override
         public void handleMsg(String msg) {
-            outMgr.println((String) msg);
+            outMgr.println(msg);
             outMgr.print(PROMPT);
         }
     }

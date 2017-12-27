@@ -59,6 +59,10 @@ public class ServerConnection {
         toServer.reset();
     }
 
+    public void startGame() throws IOException{
+        sendMsg(MsgType.START);
+    }
+
     private class Listener implements Runnable {
         private final OutputHandler outputHandler;
 
@@ -72,7 +76,7 @@ public class ServerConnection {
                 while (true) {
                     Message msg = (Message) fromServer.readObject();
 
-                    outputHandler.handleMsg("Got message");
+                    outputHandler.handleMsg(msg.getBody());
                 }
             }
             catch (Throwable connectionFailure){

@@ -19,7 +19,8 @@ public class GameServer {
     /**
      * Takes one command line argument and litsents on port 8080
      */
-    public static void main(String[] args) {
+    public static void start(String[] args) {
+        System.out.println("Gameserver was started!");
         GameServer server = new GameServer();
         server.serve();
     }
@@ -35,6 +36,10 @@ public class GameServer {
         } catch (IOException e) {
             System.err.println("Server crashed");
         }
+    }
+
+    void removeHandler(GameHandler client) {
+        clients.remove(client);
     }
 
     private void startHandler(Socket clientSocket) throws SocketException {

@@ -1,24 +1,20 @@
 package server.controller;
 
-import server.game.Game;
+import server.game.HangmanGame;
 
 public class Controller {
 
-    private final Game game = new Game();
+    private HangmanGame game;
 
-    /**
-     * appends guesses to the game
-     */
-    public void appendGuess(String entry) {
-        game.appendGuess(entry);
+    public void newHangmanGame() {
+        game = new HangmanGame();
     }
 
-    public String getGame() {
-        return "You got the game";
+    public void startNewGameInstance() {
+        game.newGameInst();
     }
 
-
-    public void guess(String guess) {
-        game.guess(guess);
+    public String guess(String guess) {
+        return game.guess(guess);
     }
 }
